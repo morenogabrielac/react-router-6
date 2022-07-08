@@ -8,6 +8,7 @@ import Error from './pages/Error';
 import Invoices from './routes/Invoices';
 import Expenses from './routes/Expenses';
 import Invoice from './routes/Invoice';
+import ProtectedRoutes from './security/ProtectedRoutes';
 
 /**
 * Otra forma de hacerlo es metiendo en el App un navbar y abajo separando con un div el <Outlet> que nos va a permitir reflejar las rutas que ya estariamos definiendo
@@ -30,22 +31,24 @@ function App() {
       </nav>
 
       <Routes>
-        <Route path='/' element={<Home/>}></Route>
-        <Route path='/about' element={<About/>}></Route>
-        <Route path='/profile/:username' element={<Profile/>}></Route>
-        <Route path='/invoices' element={<Invoices/>}>
-          <Route
-            index
-            element={
-                <div style={{ padding: "1rem" }}>
-                  <p>Select an invoice</p>
-                </div>
-            }
-          />
-          <Route path=':invoiceId' element={<Invoice/>} />
-        </Route>
-        <Route path='/expenses' element={<Expenses/>}></Route>
-        <Route path='/*' element={<Error/>}></Route>
+        <Route path='/' element={<Home/>}/>
+          <Route element={<ProtectedRoutes/>}> 
+            <Route path='/about' element={<About/>}/>
+            <Route path='/profile/:username' element={<Profile/>}/>
+            <Route path='/invoices' element={<Invoices/>}>
+              <Route
+                index
+                element={
+                    <div style={{ padding: "1rem" }}>
+                      <p>Select an invoice</p>
+                    </div>
+                }
+              />
+              <Route path=':invoiceId' element={<Invoice/>} />
+            </Route>
+            <Route path='/expenses' element={<Expenses/>}/>
+            <Route path='/*' element={<Error/>}/>
+          </Route> 
       </Routes>
      <nav>
           <Outlet></Outlet>
